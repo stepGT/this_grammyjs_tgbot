@@ -16,6 +16,29 @@ bot.api.setMyCommands([
 bot.command(['sayHello', 'hello', 'say_hi'], async (ctx) => {
   await ctx.reply('Hello!');
 });
+
+bot.on('message:voice', async (ctx) => {
+  await ctx.reply('Получил сообщение с voice');
+});
+
+bot.on('::email', async (ctx) => {
+  await ctx.reply('Ваше сообщение содержит email');
+});
+
+bot.on('message').filter(
+  (ctx) => ctx.from.id === 255162448,
+  async (ctx) => {
+    await ctx.reply('Привет, админ!');
+  },
+);
+
+bot.hears(/пипец/, async (ctx) => {
+  await ctx.reply('Ругаемся?');
+});
+
+bot.hears(['пинг', 'еще пинг'], async (ctx) => {
+  await ctx.reply('понг');
+});
 //
 bot.command('start', async (ctx) => {
   await ctx.reply('Hello i am bot!');

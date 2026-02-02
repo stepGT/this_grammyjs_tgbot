@@ -2,12 +2,23 @@ require('dotenv').config();
 const { Bot, GrammyError, HttpError } = require('grammy');
 const bot = new Bot(process.env.TOKEN_BOT);
 //
-bot.command('start', async (ctx) => {
-  await ctx.reply('Hello i am bot!');
+bot.api.setMyCommands([
+  {
+    command: 'start',
+    description: 'Запуск бота'
+  },
+  {
+    command: 'hello',
+    description: 'Получить приветствие'
+  }
+]);
+//
+bot.command(['sayHello', 'hello', 'say_hi'], async (ctx) => {
+  await ctx.reply('Hello!');
 });
 //
-bot.on('message', async (ctx) => {
-  await ctx.reply('I need to think about it.');
+bot.command('start', async (ctx) => {
+  await ctx.reply('Hello i am bot!');
 });
 
 bot.catch((err) => {

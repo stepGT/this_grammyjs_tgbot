@@ -1,0 +1,21 @@
+{
+  "name": "this_grammyjs_tgbot",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/stepGT/this_grammyjs_tgbot.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/stepGT/this_grammyjs_tgbot/issues"
+  },
+  "homepage": "https://github.com/stepGT/this_grammyjs_tgbot#readme"
+}

@@ -1,5 +1,5 @@
 require('dotenv').config();
-const { Bot, GrammyError, HttpError } = require('grammy');
+const { Bot, GrammyError, HttpError, Keyboard } = require('grammy');
 const bot = new Bot(process.env.TOKEN_BOT);
 //
 bot.api.setMyCommands([
@@ -8,41 +8,35 @@ bot.api.setMyCommands([
     description: 'Запуск бота',
   },
   {
-    command: 'hello',
-    description: 'Получить приветствие',
+    command: 'share',
+    description: 'Получить контакты',
   },
 ]);
 //
-bot.command(['sayHello', 'hello', 'say_hi'], async (ctx) => {
-  await ctx.reply('Hello!');
-});
-
-bot.command('start', async (ctx) => {
-  await ctx.react('🍌');
-  await ctx.reply('This [link](https://t.me/pomazkovjs)', {
-    parse_mode: 'MarkdownV2',
-    disable_web_page_preview: true,
+bot.command('share', async (ctx) => {
+  const moodKeyboard = new Keyboard()
+    .requestLocation('Location')
+    .row()
+    .requestContact('Contact')
+    .row()
+    .requestPoll('Poll')
+    .placeholder('Data')
+    .resized();
+  await ctx.reply('How are u?', {
+    reply_markup: moodKeyboard,
   });
 });
 
-bot.on('::email', async (ctx) => {
-  await ctx.reply('Ваше сообщение содержит email');
+bot.on(':contact', async (ctx) => {
+  await ctx.reply('Thx for contact!');
 });
 
-bot.on('message').filter(
-  (ctx) => ctx.from.id === 421948346,
-  async (ctx) => {
-    await ctx.reply('Привет, админ!');
-  },
-);
-
-bot.hears(/пипец/, async (ctx) => {
-  await ctx.reply('Ругаемся?');
+bot.hears('Okey', async (ctx) => {
+  await ctx.reply('Its Okey!!', {
+    reply_markup: { remove_keyboard: true },
+  });
 });
 
-bot.hears(['пинг', 'еще пинг'], async (ctx) => {
-  await ctx.reply('понг');
-});
 //
 bot.catch((err) => {
   const { ctx } = err;

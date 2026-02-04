@@ -5,20 +5,24 @@ const bot = new Bot(process.env.TOKEN_BOT);
 bot.api.setMyCommands([
   {
     command: 'start',
-    description: 'Запуск бота'
+    description: 'Запуск бота',
   },
   {
     command: 'hello',
-    description: 'Получить приветствие'
-  }
+    description: 'Получить приветствие',
+  },
 ]);
 //
 bot.command(['sayHello', 'hello', 'say_hi'], async (ctx) => {
   await ctx.reply('Hello!');
 });
 
-bot.on('message:voice', async (ctx) => {
-  await ctx.reply('Получил сообщение с voice');
+bot.command('start', async (ctx) => {
+  await ctx.react('🍌');
+  await ctx.reply('This [link](https://t.me/pomazkovjs)', {
+    parse_mode: 'MarkdownV2',
+    disable_web_page_preview: true,
+  });
 });
 
 bot.on('::email', async (ctx) => {
@@ -40,10 +44,6 @@ bot.hears(['пинг', 'еще пинг'], async (ctx) => {
   await ctx.reply('понг');
 });
 //
-bot.command('start', async (ctx) => {
-  await ctx.reply('Hello i am bot!');
-});
-
 bot.catch((err) => {
   const { ctx } = err;
   console.error(`Error while handling update ${ctx.update.update_id}:`);

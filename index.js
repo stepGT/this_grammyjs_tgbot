@@ -26,7 +26,7 @@ bot.on('::email', async (ctx) => {
 });
 
 bot.on('message').filter(
-  (ctx) => ctx.from.id === 255162448,
+  (ctx) => ctx.from.id === 421948346,
   async (ctx) => {
     await ctx.reply('Привет, админ!');
   },

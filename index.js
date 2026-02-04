@@ -48,7 +48,7 @@ bot.catch((err) => {
   const { ctx } = err;
   console.error(`Error while handling update ${ctx.update.update_id}:`);
   const { error } = err;
-  if (e instanceof GrammyError) {
+  if (error instanceof GrammyError) {
     console.error('Error in request:', error.description);
   } else if (error instanceof HttpError) {
     console.error('Could not contact Telegram:', error);

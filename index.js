@@ -1,5 +1,5 @@
 require('dotenv').config();
-const { Bot, GrammyError, HttpError, Keyboard } = require('grammy');
+const { Bot, GrammyError, HttpError, Keyboard, InlineKeyboard } = require('grammy');
 const bot = new Bot(process.env.TOKEN_BOT);
 //
 bot.api.setMyCommands([
@@ -10,6 +10,10 @@ bot.api.setMyCommands([
   {
     command: 'share',
     description: 'Получить контакты',
+  },
+  {
+    command: 'inline_keyboard',
+    description: 'Инлайн кейборд',
   },
 ]);
 //
@@ -25,6 +29,26 @@ bot.command('share', async (ctx) => {
   await ctx.reply('How are u?', {
     reply_markup: moodKeyboard,
   });
+});
+
+bot.command('inline_keyboard', async (ctx) => {
+  const inlineKeyboard = new InlineKeyboard()
+    .text('1', 'button-1')
+    .text('2', 'button-2')
+    .text('3', 'button-3');
+  await ctx.reply('Choose number', {
+    reply_markup: inlineKeyboard,
+  });
+});
+
+// bot.callbackQuery(['button-1', 'button-2', 'button-3'], async (ctx) => {
+//   await ctx.answerCallbackQuery('You choose button! WW');
+//   await ctx.reply('You choose button!');
+// });
+
+bot.on('callback_query:data', async (ctx) => {
+  await ctx.answerCallbackQuery();
+  await ctx.reply(`You choose button: ${ctx.callbackQuery.data}`);
 });
 
 bot.on(':contact', async (ctx) => {

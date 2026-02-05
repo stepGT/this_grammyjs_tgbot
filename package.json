@@ -19,6 +19,7 @@
   },
   "homepage": "https://github.com/stepGT/this_grammyjs_tgbot#readme",
   "dependencies": {
+    "@grammyjs/hydrate": "^1.6.0",
     "dotenv": "^17.2.3",
     "grammy": "^1.39.3",
     "nodemon": "^3.1.11"

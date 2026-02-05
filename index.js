@@ -1,6 +1,8 @@
 require('dotenv').config();
 const { Bot, GrammyError, HttpError, Keyboard, InlineKeyboard } = require('grammy');
+const { hydrate } = require('@grammyjs/hydrate');
 const bot = new Bot(process.env.TOKEN_BOT);
+bot.use(hydrate());
 //
 bot.api.setMyCommands([
   {
@@ -8,56 +10,39 @@ bot.api.setMyCommands([
     description: 'Запуск бота',
   },
   {
-    command: 'share',
-    description: 'Получить контакты',
-  },
-  {
-    command: 'inline_keyboard',
-    description: 'Инлайн кейборд',
+    command: 'menu',
+    description: 'Выбрать меню',
   },
 ]);
 //
-bot.command('share', async (ctx) => {
-  const moodKeyboard = new Keyboard()
-    .requestLocation('Location')
-    .row()
-    .requestContact('Contact')
-    .row()
-    .requestPoll('Poll')
-    .placeholder('Data')
-    .resized();
-  await ctx.reply('How are u?', {
-    reply_markup: moodKeyboard,
+const menuKeyBoard = new InlineKeyboard()
+  .text('Check status', 'order-status')
+  .text('Go to support', 'support');
+const backKeyBoard = new InlineKeyboard().text('< Back to menu', 'back');
+//
+bot.command('menu', async (ctx) => {
+  await ctx.reply('Choose menu point', {
+    reply_markup: menuKeyBoard,
   });
 });
-
-bot.command('inline_keyboard', async (ctx) => {
-  const inlineKeyboard = new InlineKeyboard().url('Go to channel', 'https://t.me/pomazkovjs');
-  await ctx.reply('Press button', {
-    reply_markup: inlineKeyboard,
+bot.callbackQuery('order-status', async (ctx) => {
+  await ctx.callbackQuery.message.editText('In delivery', {
+    reply_markup: backKeyBoard,
   });
-});
-
-bot.callbackQuery(/button-[1-3]/, async (ctx) => {
   await ctx.answerCallbackQuery();
-  await ctx.reply(`You choose button: ${ctx.callbackQuery.data}`);
 });
-
-// bot.on('callback_query:data', async (ctx) => {
-//   await ctx.answerCallbackQuery();
-//   await ctx.reply(`You choose button: ${ctx.callbackQuery.data}`);
-// });
-
-bot.on(':contact', async (ctx) => {
-  await ctx.reply('Thx for contact!');
-});
-
-bot.hears('Okey', async (ctx) => {
-  await ctx.reply('Its Okey!!', {
-    reply_markup: { remove_keyboard: true },
+bot.callbackQuery('support', async (ctx) => {
+  await ctx.callbackQuery.message.editText('Write your question:', {
+    reply_markup: backKeyBoard,
   });
+  await ctx.answerCallbackQuery();
 });
-
+bot.callbackQuery('back', async (ctx) => {
+  await ctx.callbackQuery.message.editText('Choose menu point', {
+    reply_markup: menuKeyBoard,
+  });
+  await ctx.answerCallbackQuery();
+});
 //
 bot.catch((err) => {
   const { ctx } = err;

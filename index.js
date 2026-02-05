@@ -32,11 +32,8 @@ bot.command('share', async (ctx) => {
 });
 
 bot.command('inline_keyboard', async (ctx) => {
-  const inlineKeyboard = new InlineKeyboard()
-    .text('1', 'button-1')
-    .text('2', 'button-2')
-    .text('3', 'button-3');
-  await ctx.reply('Choose number', {
+  const inlineKeyboard = new InlineKeyboard().url('Go to channel', 'https://t.me/pomazkovjs');
+  await ctx.reply('Press button', {
     reply_markup: inlineKeyboard,
   });
 });

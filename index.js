@@ -41,15 +41,15 @@ bot.command('inline_keyboard', async (ctx) => {
   });
 });
 
-// bot.callbackQuery(['button-1', 'button-2', 'button-3'], async (ctx) => {
-//   await ctx.answerCallbackQuery('You choose button! WW');
-//   await ctx.reply('You choose button!');
-// });
-
-bot.on('callback_query:data', async (ctx) => {
+bot.callbackQuery(/button-[1-3]/, async (ctx) => {
   await ctx.answerCallbackQuery();
   await ctx.reply(`You choose button: ${ctx.callbackQuery.data}`);
 });
+
+// bot.on('callback_query:data', async (ctx) => {
+//   await ctx.answerCallbackQuery();
+//   await ctx.reply(`You choose button: ${ctx.callbackQuery.data}`);
+// });
 
 bot.on(':contact', async (ctx) => {
   await ctx.reply('Thx for contact!');
